@@ -1,9 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="js/three.min.js"></script>
 <script src="js/seventh.js"></script>
+<script src="js/orbitcontrols.js"></script>
+<script src="js/loop.js"></script>
 <script src="js/setup.js"></script>
 </head>
 <body>
+
+	<script>
+		
+			var render = function () {
+				// console.log('o')
+				requestAnimationFrame( render );
+				animationLoop();
+				renderer.render(scene, camera);
+			};
+			//render();
+		</script>
+
+	
 </body>
 </html>
