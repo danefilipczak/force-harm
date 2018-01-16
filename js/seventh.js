@@ -1,4 +1,4 @@
-var linkDistance = 10;
+
 
 function Seventh(root_, type_) {
 	this.root = root_;
@@ -25,7 +25,7 @@ function Seventh(root_, type_) {
 
 	this.sphere = new THREE.Mesh(this.geometry, this.material);
 	scene.add(this.sphere);
-	var splay=10;
+	var splay=100;
 	this.sphere.position.x+=(Math.random()*splay)-splay/2;
 	this.sphere.position.y+=(Math.random()*splay)-splay/2;
 	this.sphere.position.z+=(Math.random()*splay)-splay/2;
@@ -66,7 +66,7 @@ Seventh.prototype.initLines = function(){
 		var geometry = new THREE.Geometry();
 		geometry.vertices.push(self.sphere.position.clone());
 		geometry.vertices.push(link.sphere.position.clone());
-		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({}));
+		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({color:'black'}));
 		scene.add(line)
 		self.lines.push(line);
 
@@ -79,17 +79,27 @@ Seventh.prototype.forceLink = function(){
 	// and the target distance, similar to a spring force.
 	var self = this;
 	this.linkedTo.forEach(function(link){
-		var distance = self.sphere.position.distanceTo(link.sphere.position);
-		//calculate desired positio
-		var diff = linkDistance-distance;
-		var desired = self.sphere.position.clone();
-        desired = desired.sub(link.sphere.position);
-        desired.normalize()
-        // desired.multiplyScalar(linkDistance)
-		desired.multiplyScalar(diff); 
-		desired.multiplyScalar(0.3)
-		// desired.normalize()
-		self.addForce(desired);
+		
+		// var line = new THREE.Line3(self.sphere.position, link.sphere.position);
+		// var distance = line.distance();
+		// var diff = linkDistance-distance;
+		// if(diff>0){
+		// 	//need to get further apart
+		// 	var target = line.at(1-(distance/linkDistance))
+
+		// } else {
+		// 	//need to get closer together
+		// 	var target = line.at((distance/linkDistance)-1);
+
+		// }
+		var distance = self.sphere.position.distanceTo(link.sphere.position)
+		var target = self.sphere.position.clone()
+		target.lerp(link.sphere.position, linkDistance/distance)
+		target.multiplyScalar(-distance-linkDistance)
+		// target.normalize()
+		target.multiplyScalar(linkStrength*forceMult)
+		self.addForce(target)
+		
 	})
 }
 
