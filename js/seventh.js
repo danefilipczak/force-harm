@@ -1,4 +1,4 @@
-var linkDistance = 20;
+var linkDistance = 10;
 
 function Seventh(root_, type_) {
 	this.root = root_;
@@ -6,6 +6,7 @@ function Seventh(root_, type_) {
 	this.chroma = []
 	this.linkedTo = [];
 	this.initialize()
+	this.lines = [];
 	this.geometry = new THREE.SphereGeometry(this.r, 32, 32);
 	// this.material = new THREE.MeshPhongMaterial( {color: 'yellow'} );
 
@@ -24,7 +25,7 @@ function Seventh(root_, type_) {
 
 	this.sphere = new THREE.Mesh(this.geometry, this.material);
 	scene.add(this.sphere);
-	var splay=100;
+	var splay=10;
 	this.sphere.position.x+=(Math.random()*splay)-splay/2;
 	this.sphere.position.y+=(Math.random()*splay)-splay/2;
 	this.sphere.position.z+=(Math.random()*splay)-splay/2;
@@ -37,9 +38,39 @@ Seventh.prototype.addForce = function(force){
     this.velocity.add(force);
 }
 
+Seventh.prototype.updateLines = function(){
+	for(var i = 0; i<this.linkedTo.length; i++){
+		this.lines[i].geometry.vertices[0].x = this.sphere.position.x;
+		this.lines[i].geometry.vertices[0].y = this.sphere.position.y;
+		this.lines[i].geometry.vertices[0].z = this.sphere.position.z;
+
+
+		this.lines[i].geometry.vertices[1].x = this.linkedTo[i].sphere.position.x;
+		this.lines[i].geometry.vertices[1].y = this.linkedTo[i].sphere.position.y;
+		this.lines[i].geometry.vertices[1].z = this.linkedTo[i].sphere.position.z;
+
+
+		this.lines[i].geometry.verticesNeedUpdate = true;
+	}
+}
+
 Seventh.prototype.applyForce = function(){
 	this.sphere.position.add(this.velocity);
 	this.velocity.multiplyScalar(0);
+}
+
+Seventh.prototype.initLines = function(){
+	var self = this;
+
+	this.linkedTo.forEach(function(link){
+		var geometry = new THREE.Geometry();
+		geometry.vertices.push(self.sphere.position.clone());
+		geometry.vertices.push(link.sphere.position.clone());
+		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({}));
+		scene.add(line)
+		self.lines.push(line);
+
+	})
 }
 
 Seventh.prototype.forceLink = function(){
@@ -53,8 +84,10 @@ Seventh.prototype.forceLink = function(){
 		var diff = linkDistance-distance;
 		var desired = self.sphere.position.clone();
         desired = desired.sub(link.sphere.position);
-		desired.divideScalar(diff); 
-		// desired.multiplyScalar(0.1)
+        desired.normalize()
+        // desired.multiplyScalar(linkDistance)
+		desired.multiplyScalar(diff); 
+		desired.multiplyScalar(0.3)
 		// desired.normalize()
 		self.addForce(desired);
 	})

@@ -43,6 +43,10 @@ window.onload = function() {
 		}
 	}
 
+	sevenths.forEach(function(s){
+		s.initLines();
+	})
+
 	
 	// var materialArray = [];
 	// for (var i = 0; i < 6; i++)
