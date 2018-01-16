@@ -24,7 +24,9 @@ function Seventh(root_, type_) {
     });
 
 	this.sphere = new THREE.Mesh(this.geometry, this.material);
+	this.sphere.userData = this;
 	scene.add(this.sphere);
+
 	var splay=100;
 	this.sphere.position.x+=(Math.random()*splay)-splay/2;
 	this.sphere.position.y+=(Math.random()*splay)-splay/2;
@@ -66,7 +68,7 @@ Seventh.prototype.initLines = function(){
 		var geometry = new THREE.Geometry();
 		geometry.vertices.push(self.sphere.position.clone());
 		geometry.vertices.push(link.sphere.position.clone());
-		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({color:'black'}));
+		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({color:'lightgrey'}));
 		scene.add(line)
 		self.lines.push(line);
 
