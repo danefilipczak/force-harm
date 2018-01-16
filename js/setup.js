@@ -3,6 +3,8 @@ var scene;
 var camera;
 var mouse = new THREE.Vector2();
 var raycaster = new THREE.Raycaster();
+var cursor;
+
 
 function onMouseMove( event ) {
 
@@ -15,7 +17,23 @@ function onMouseMove( event ) {
 
 }
 
+
+
 window.addEventListener( 'mousemove', onMouseMove, false );
+
+
+function onMousePress(event){
+
+	console.log('press')
+	lastChord=currentChord;
+	currentChord=lastChord.linkedTo[Math.floor(Math.random()*lastChord.linkedTo.length)];
+
+
+	triggerCursor();
+
+}
+
+window.addEventListener( 'click', onMousePress, false );
 
 window.onload = function() {
 
@@ -62,6 +80,27 @@ window.onload = function() {
 		s.initLines();
 	})
 
+
+	var geometry = new THREE.SphereGeometry(1.1, 32, 32);
+	// this.material = new THREE.MeshPhongMaterial( {color: 'yellow'} );
+
+
+	// var shader = THREE.FresnelShader;
+	// var uniforms = THREE.UniformsUtils.clone(shader.uniforms);
+	// uniforms["tCube"].value = textureCube;
+	// this.material = new THREE.ShaderMaterial({
+	// 	uniforms: uniforms,
+	// 	vertexShader: shader.vertexShader,
+	// 	fragmentShader: shader.fragmentShader
+	// });
+	var material = new THREE.MeshPhongMaterial({
+        color: 'black'
+    });
+    // material.transparent=true;
+    // material.opacity=0.5
+
+	cursor = new THREE.Mesh(geometry, material);
+	scene.add(cursor);
 	
 	// var materialArray = [];
 	// for (var i = 0; i < 6; i++)
@@ -80,6 +119,8 @@ window.onload = function() {
 
 
 	//
+	currentChord = sevenths[0];
+	lastChord = sevenths[1];
 
 	render();
 }

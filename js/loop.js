@@ -5,6 +5,12 @@ var linkDistance = 15;
 var linkStrength = 0.001;
 var overChord = null;
 var framecount = 0;
+var currentChord;
+var lastChord;
+var cursortick=0;
+
+currentNoise=1;
+lastNoise=0;
 
 
 function animationLoop(){
@@ -27,17 +33,69 @@ function animationLoop(){
     framecount++;
 
     var x = noise.simplex3(1, 1, framecount/100);
-    sevenths[0].sphere.position.x=x*10
+    currentChord.sphere.position.x+=x*currentNoise;
 
     var y = noise.simplex3(1, 1, framecount/100);
-    sevenths[0].sphere.position.z=y*10
+    currentChord.sphere.position.y+=y*currentNoise;
 
     var z = noise.simplex3(1, 1, framecount/100);
-    sevenths[0].sphere.position.z=z*10
+    currentChord.sphere.position.z+=z*currentNoise;
+
+
+
+    var x = noise.simplex3(1, 1, framecount/100);
+    lastChord.sphere.position.x+=x*lastNoise;
+
+    var y = noise.simplex3(1, 1, framecount/100);
+    lastChord.sphere.position.y+=y*lastNoise;
+
+    var z = noise.simplex3(1, 1, framecount/100);
+    lastChord.sphere.position.z+=z*lastNoise;
+
+    
+    animateCursor(100);
+
 
     // sevenths[0].addForce(new THREE.Vector3(x, y, z))
 
 
+}
+
+
+function sigmoid(t) {
+    return 1/(1+Math.pow(Math.E, -t));
+}
+
+function triggerCursor(){
+    cursortick=0;
+    // lastNoise=1;
+    // currentNoise=0;
+}
+
+function animateCursor(duration){
+    if(moveCursor(cursortick, duration)){
+        console.log('hey')
+    } else {
+        cursor.position.set(currentChord.sphere.position.x, currentChord.sphere.position.y, currentChord.sphere.position.z)
+    }
+    cursortick++;
+}
+
+function moveCursor(frame, duration){
+    
+    if(frame>=duration){
+        return false;
+    } else {
+        var line = new THREE.Line3(lastChord.sphere.position, currentChord.sphere.position);
+        var val = sigmoid(((frame/duration)*12)-6);
+        var point = line.at(val);
+        cursor.position.set(point.x, point.y, point.z)
+        lastNoise=1-val;
+        currentNoise=val;
+        return true;
+    }
+    
+    
 }
 
 function raycast(){
