@@ -4,13 +4,16 @@ var camera;
 var mouse = new THREE.Vector2();
 var raycaster = new THREE.Raycaster();
 var cursor;
+var mouseX;
+var mouseY;
 
 
 function onMouseMove( event ) {
 
 	// calculate mouse position in normalized device coordinates
 	// (-1 to +1) for both components
-
+	mouseX = event.clientX;
+	mouseY = event.clientY;
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 

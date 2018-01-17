@@ -74,7 +74,7 @@ function triggerCursor(){
 
 function animateCursor(duration){
     if(moveCursor(cursortick, duration)){
-        console.log('hey')
+        // console.log('hey')
     } else {
         cursor.position.set(currentChord.sphere.position.x, currentChord.sphere.position.y, currentChord.sphere.position.z)
     }
@@ -112,9 +112,24 @@ function raycast(){
     if (hits.length > 0) {
         // console.log('hit')
         overChord=hits[0].object.userData;
-        overChord.sphere.material.color.set('red')
+        overChord.sphere.material.color.set('white')
+        showLabel();
  
+    } else {
+        hideLabel()
     }
+}
+
+function showLabel(){
+    document.getElementById('label').style.display='inline'
+    document.getElementById('label').style.left=mouseX+20 + 'px'
+    document.getElementById('label').style.top=mouseY-20+ 'px'
+    document.getElementById('label').innerHTML=overChord.root + overChord.type;
+}
+
+function hideLabel(){
+    document.getElementById('label').innerHTML='';
+    document.getElementById('label').style.display='none'
 }
 
 function staticCharge(){
