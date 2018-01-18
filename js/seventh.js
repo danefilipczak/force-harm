@@ -1,4 +1,29 @@
 
+function translateChordName(root, type){
+	// var name = '';
+	var roots = {
+		0:'C',
+		1:'C#',
+		2: 'D',
+		3: 'D#',
+		4: 'E',
+		5: 'F',
+		6: 'F#',
+		7: 'G',
+		8: 'G#',
+		9: 'A',
+		10: 'A#',
+		11: 'B',
+
+	}
+	var stems = {
+		'fr':'7b5',
+		'dom':'7',
+		'hd':'-7b5',
+		'm7':'-7'
+	}
+	return roots[root]+stems[type];
+}
 
 function Seventh(root_, type_) {
 	this.root = root_;

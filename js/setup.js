@@ -7,6 +7,13 @@ var cursor;
 var mouseX;
 var mouseY;
 
+window.addEventListener('keypress', function(e) {
+  var key = String.fromCharCode(e.keyCode || e.which).toLowerCase();
+  if (key=='w'||key=='a'||key=='s'||key=='d'||key=='z'){
+  	triggerNavigate(key);
+  }
+  // console.log(key)
+});
 
 function onMouseMove( event ) {
 
@@ -28,11 +35,7 @@ window.addEventListener( 'mousemove', onMouseMove, false );
 function onMousePress(event){
 
 	console.log('press')
-	lastChord=currentChord;
-	currentChord=lastChord.linkedTo[Math.floor(Math.random()*lastChord.linkedTo.length)];
-
-
-	triggerCursor();
+	
 
 }
 
@@ -127,4 +130,22 @@ window.onload = function() {
 
 	render();
 	loadVM();
+	setVMFromCurrentChord()
+	// vm.linkedTo = currentChord.linkedTo.slice()
+	// Vue.set(vm, 'linkedTo', currentChord.linkedTo)
+}
+
+
+function setVMFromCurrentChord(){
+	vm.current=translateChordName(currentChord.root, currentChord.type);
+	vm.w = translateChordName(currentChord.linkedTo[0].root, currentChord.linkedTo[0].type)
+	vm.a = translateChordName(currentChord.linkedTo[1].root, currentChord.linkedTo[1].type)
+	vm.s = translateChordName(currentChord.linkedTo[2].root, currentChord.linkedTo[2].type)
+	vm.d = translateChordName(currentChord.linkedTo[3].root, currentChord.linkedTo[3].type)
+	if(currentChord.linkedTo[4]){
+		vm.z = translateChordName(currentChord.linkedTo[4].root, currentChord.linkedTo[4].type)
+	} else {
+		vm.z=null;
+	}
+	
 }

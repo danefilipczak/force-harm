@@ -27,22 +27,39 @@
 	
 <div id="label">hello</div>
 
+
 <div id="app">
+	<div id="current">{{current}}</div>
 	<div id="arrows">
 		<div id="w" class="arrow">
 			W
+			<div id="wChord" class="chord">
+			{{w}}
+			</div>
 		</div>
 		<div id="a" class="arrow">
 			A
+			<div id="aChord" class="chord">
+			{{a}}
+			</div>
 		</div>
 		<div id="s" class="arrow">
 			S
+			<div id="sChord" class="chord">
+			{{s}}
+			</div>
 		</div>
 		<div id="d" class="arrow">
 			D
+			<div id="dChord" class="chord">
+			{{d}}
+			</div>
 		</div>
-		<div id="z" class="arrow">
+		<div v-if="z" id="z" class="arrow">
 			Z
+			<div id="zChord" class="chord">
+			{{z}}
+			</div>
 		</div>
 	</div>
 </div>

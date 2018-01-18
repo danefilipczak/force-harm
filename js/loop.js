@@ -124,7 +124,7 @@ function showLabel(){
     document.getElementById('label').style.display='inline'
     document.getElementById('label').style.left=mouseX+20 + 'px'
     document.getElementById('label').style.top=mouseY-20+ 'px'
-    document.getElementById('label').innerHTML=overChord.root + overChord.type;
+    document.getElementById('label').innerHTML=translateChordName(overChord.root, overChord.type);
 }
 
 function hideLabel(){

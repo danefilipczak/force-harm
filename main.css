@@ -5,6 +5,7 @@ body{
 
 
 #label{
+	display:none;
 	position:fixed;
 	z-index:1;
 	font-size:30px;
@@ -22,6 +23,14 @@ body{
 	width:100%;
 }
 
+#current{
+	position:fixed;
+	z-index:1;
+	left:0px;
+	color:white;
+	font-size:70px;
+}
+
 
 #arrows{
 	/*background-color:red;*/
@@ -30,6 +39,14 @@ body{
 	right:0px;
 	width:31.8%;
 	padding-top:31.8%;
+}
+
+.chord{
+	position:absolute;
+	top:50%;
+	color:black;
+	font-size:20px;
+	text-align:center;
 }
 
 .arrow{
