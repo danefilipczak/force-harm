@@ -126,4 +126,5 @@ window.onload = function() {
 	lastChord = sevenths[1];
 
 	render();
+	loadVM();
 }
