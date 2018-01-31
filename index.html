@@ -10,6 +10,7 @@
 <script src="js/setup.js"></script>
 <script src="js/libs/noise.js"></script>
 <script src="js/libs/vue.js"></script>
+<script src="js/BFS.js"></script>
 </head>
 <body>
 
@@ -29,36 +30,38 @@
 
 
 <div id="app">
-	<div id="current">{{current}}</div>
+	<div id="current">
+		{{current.root}}{{current.stem}}<sup>{{current.super}}</sup>
+	</div>
 	<div id="arrows">
 		<div id="w" class="arrow">
 			W
 			<div id="wChord" class="chord">
-			{{w}}
+			{{w.root}}{{w.stem}}<sup>{{w.super}}</sup>
 			</div>
 		</div>
 		<div id="a" class="arrow">
 			A
 			<div id="aChord" class="chord">
-			{{a}}
+			{{a.root}}{{a.stem}}<sup>{{a.super}}</sup>
 			</div>
 		</div>
 		<div id="s" class="arrow">
 			S
 			<div id="sChord" class="chord">
-			{{s}}
+			{{s.root}}{{s.stem}}<sup>{{s.super}}</sup>
 			</div>
 		</div>
 		<div id="d" class="arrow">
 			D
 			<div id="dChord" class="chord">
-			{{d}}
+			{{d.root}}{{d.stem}}<sup>{{d.super}}</sup>
 			</div>
 		</div>
 		<div v-if="z" id="z" class="arrow">
 			Z
 			<div id="zChord" class="chord">
-			{{z}}
+			{{z.root}}{{z.stem}}<sup>{{z.super}}</sup>
 			</div>
 		</div>
 	</div>

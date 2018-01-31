@@ -1,9 +1,8 @@
-
-function translateChordName(root, type){
+function translateChordName(root, type) {
 	// var name = '';
 	var roots = {
-		0:'C',
-		1:'C#',
+		0: 'C',
+		1: 'C#',
 		2: 'D',
 		3: 'D#',
 		4: 'E',
@@ -17,12 +16,22 @@ function translateChordName(root, type){
 
 	}
 	var stems = {
-		'fr':'7b5',
-		'dom':'7',
-		'hd':'-7b5',
-		'm7':'-7'
+		'fr': '7',
+		'dom': '7',
+		'hd': '-7',
+		'm7': '-7'
 	}
-	return roots[root]+stems[type];
+	var supers = {
+		'fr': 'b5',
+		'dom': '',
+		'hd': 'b5',
+		'm7': ''
+	}
+	return {
+		'root': roots[root],
+		'stem': stems[type],
+		'super': supers[type]
+	}
 }
 
 function Seventh(root_, type_) {
@@ -32,6 +41,11 @@ function Seventh(root_, type_) {
 	this.linkedTo = [];
 	this.initialize()
 	this.lines = [];
+
+	//for BFS
+	this.visited = false;
+	this.parent = null;
+
 	this.geometry = new THREE.SphereGeometry(this.r, 32, 32);
 	// this.material = new THREE.MeshPhongMaterial( {color: 'yellow'} );
 
@@ -45,28 +59,28 @@ function Seventh(root_, type_) {
 	// 	fragmentShader: shader.fragmentShader
 	// });
 	this.material = new THREE.MeshPhongMaterial({
-        color: 'cyan'
-    });
+		color: 'cyan'
+	});
 
 	this.sphere = new THREE.Mesh(this.geometry, this.material);
 	this.sphere.userData = this;
 	scene.add(this.sphere);
 
-	var splay=100;
-	this.sphere.position.x+=(Math.random()*splay)-splay/2;
-	this.sphere.position.y+=(Math.random()*splay)-splay/2;
-	this.sphere.position.z+=(Math.random()*splay)-splay/2;
+	var splay = 100;
+	this.sphere.position.x += (Math.random() * splay) - splay / 2;
+	this.sphere.position.y += (Math.random() * splay) - splay / 2;
+	this.sphere.position.z += (Math.random() * splay) - splay / 2;
 
 	this.velocity = new THREE.Vector3();
 }
 
-Seventh.prototype.addForce = function(force){
+Seventh.prototype.addForce = function(force) {
 	// We could add mass here if we want A = F / M
-    this.velocity.add(force);
+	this.velocity.add(force);
 }
 
-Seventh.prototype.updateLines = function(){
-	for(var i = 0; i<this.linkedTo.length; i++){
+Seventh.prototype.updateLines = function() {
+	for (var i = 0; i < this.linkedTo.length; i++) {
 		this.lines[i].geometry.vertices[0].x = this.sphere.position.x;
 		this.lines[i].geometry.vertices[0].y = this.sphere.position.y;
 		this.lines[i].geometry.vertices[0].z = this.sphere.position.z;
@@ -81,32 +95,34 @@ Seventh.prototype.updateLines = function(){
 	}
 }
 
-Seventh.prototype.applyForce = function(){
+Seventh.prototype.applyForce = function() {
 	this.sphere.position.add(this.velocity);
 	this.velocity.multiplyScalar(0);
 }
 
-Seventh.prototype.initLines = function(){
+Seventh.prototype.initLines = function() {
 	var self = this;
 
-	this.linkedTo.forEach(function(link){
+	this.linkedTo.forEach(function(link) {
 		var geometry = new THREE.Geometry();
 		geometry.vertices.push(self.sphere.position.clone());
 		geometry.vertices.push(link.sphere.position.clone());
-		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({color:'lightgrey'}));
+		var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+			color: 'lightgrey'
+		}));
 		scene.add(line)
 		self.lines.push(line);
 
 	})
 }
 
-Seventh.prototype.forceLink = function(){
+Seventh.prototype.forceLink = function() {
 	// The link force pushes linked nodes together or apart according to the desired link distance. 
 	// The strength of the force is proportional to the difference between the linked nodes’ distance 
 	// and the target distance, similar to a spring force.
 	var self = this;
-	this.linkedTo.forEach(function(link){
-		
+	this.linkedTo.forEach(function(link) {
+
 		// var line = new THREE.Line3(self.sphere.position, link.sphere.position);
 		// var distance = line.distance();
 		// var diff = linkDistance-distance;
@@ -121,12 +137,12 @@ Seventh.prototype.forceLink = function(){
 		// }
 		var distance = self.sphere.position.distanceTo(link.sphere.position)
 		var target = self.sphere.position.clone()
-		target.lerp(link.sphere.position, linkDistance/distance)
-		target.multiplyScalar(-distance-linkDistance)
+		target.lerp(link.sphere.position, linkDistance / distance)
+		target.multiplyScalar(-distance - linkDistance)
 		// target.normalize()
-		target.multiplyScalar(linkStrength*forceMult)
+		target.multiplyScalar(linkStrength * forceMult)
 		self.addForce(target)
-		
+
 	})
 }
 

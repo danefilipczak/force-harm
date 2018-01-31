@@ -34,8 +34,12 @@ window.addEventListener( 'mousemove', onMouseMove, false );
 
 function onMousePress(event){
 
-	console.log('press')
+	if(overChord){
+		var shortestPath = BFS(currentChord, overChord);
+		console.log(shortestPath)
+	}
 	
+
 
 }
 
