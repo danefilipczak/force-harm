@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="main.css">
 <script src="js/libs/three.min.js"></script>
 <script src="js/seventh.js"></script>
@@ -32,36 +33,39 @@
 <div id="app">
 	<div id="current">
 		{{current.root}}{{current.stem}}<sup>{{current.super}}</sup>
+		<!-- <p v-for="chord in path">
+		{{chord.root}}
+		</p> -->
 	</div>
 	<div id="arrows">
 		<div id="w" class="arrow">
 			W
 			<div id="wChord" class="chord">
-			{{w.root}}{{w.stem}}<sup>{{w.super}}</sup>
+			{{w.root}}{{w.signjs}}{{w.stem}}<sup>{{w.super}}</sup>
 			</div>
 		</div>
 		<div id="a" class="arrow">
 			A
 			<div id="aChord" class="chord">
-			{{a.root}}{{a.stem}}<sup>{{a.super}}</sup>
+			{{a.root}}{{a.signjs}}{{a.stem}}<sup>{{a.super}}</sup>
 			</div>
 		</div>
 		<div id="s" class="arrow">
 			S
 			<div id="sChord" class="chord">
-			{{s.root}}{{s.stem}}<sup>{{s.super}}</sup>
+			{{s.root}}{{s.signjs}}{{s.stem}}<sup>{{s.super}}</sup>
 			</div>
 		</div>
 		<div id="d" class="arrow">
 			D
 			<div id="dChord" class="chord">
-			{{d.root}}{{d.stem}}<sup>{{d.super}}</sup>
+			{{d.root}}{{d.signjs}}{{d.stem}}<sup>{{d.super}}</sup>
 			</div>
 		</div>
 		<div v-if="z" id="z" class="arrow">
 			Z
 			<div id="zChord" class="chord">
-			{{z.root}}{{z.stem}}<sup>{{z.super}}</sup>
+			{{z.root}}{{z.signjs}}{{z.stem}}<sup>{{z.super}}</sup>
 			</div>
 		</div>
 	</div>

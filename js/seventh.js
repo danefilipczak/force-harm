@@ -2,19 +2,52 @@ function translateChordName(root, type) {
 	// var name = '';
 	var roots = {
 		0: 'C',
-		1: 'C#',
+		1: 'C',
 		2: 'D',
-		3: 'D#',
+		3: 'D',
 		4: 'E',
 		5: 'F',
-		6: 'F#',
+		6: 'F',
 		7: 'G',
-		8: 'G#',
+		8: 'G',
 		9: 'A',
-		10: 'A#',
+		10: 'A',
 		11: 'B',
 
 	}
+	var signs = {
+		0: '',
+		1: '&#9839;',
+		2: '',
+		3: '&#9839;',
+		4: '',
+		5: '',
+		6: '&#9839;',
+		7: '',
+		8: '&#9839;',
+		9: '',
+		10: '&#9839;',
+		11: '',
+
+	}
+	
+
+	var signsjs = {
+		0: '',
+		1: '\u266F',
+		2: '',
+		3: '\u266F',
+		4: '',
+		5: '',
+		6: '\u266F',
+		7: '',
+		8: '\u266F',
+		9: '',
+		10: '\u266F',
+		11: '',
+
+	}
+
 	var stems = {
 		'fr': '7',
 		'dom': '7',
@@ -29,6 +62,8 @@ function translateChordName(root, type) {
 	}
 	return {
 		'root': roots[root],
+		'sign': signs[root],
+		'signjs': signsjs[root],
 		'stem': stems[type],
 		'super': supers[type]
 	}

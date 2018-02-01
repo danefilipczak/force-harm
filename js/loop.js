@@ -7,73 +7,104 @@ var overChord = null;
 var framecount = 0;
 var currentChord;
 var lastChord;
-var cursortick=0;
+var cursortick = 0;
+var path = [];
 
-currentNoise=1;
-lastNoise=0;
+currentNoise = 1;
+lastNoise = 0;
 
 
-function animationLoop(){
+function animationLoop() {
 
-    sevenths.forEach(function(s){
+    sevenths.forEach(function(s) {
         s.forceLink();
     })
     staticCharge();
-    sevenths.forEach(function(s){
+    sevenths.forEach(function(s) {
         s.applyForce();
         s.updateLines();
     })
 
 
-    if(framecount%10==0){
+    if (framecount % 10 == 0) {
         // console.log('hi')
         raycast();
     }
 
     framecount++;
 
-    var x = noise.simplex3(1, 1, framecount/100);
-    currentChord.sphere.position.x+=x*currentNoise;
+    // var x = noise.simplex3(1, 1, framecount / 100);
+    // currentChord.sphere.position.x += x * currentNoise;
 
-    var y = noise.simplex3(1, 1, framecount/100);
-    currentChord.sphere.position.y+=y*currentNoise;
+    // var y = noise.simplex3(1, 1, framecount / 100);
+    // currentChord.sphere.position.y += y * currentNoise;
 
-    var z = noise.simplex3(1, 1, framecount/100);
-    currentChord.sphere.position.z+=z*currentNoise;
+    // var z = noise.simplex3(1, 1, framecount / 100);
+    // currentChord.sphere.position.z += z * currentNoise;
 
 
 
-    var x = noise.simplex3(1, 1, framecount/100);
-    lastChord.sphere.position.x+=x*lastNoise;
+    // var x = noise.simplex3(1, 1, framecount / 100);
+    // lastChord.sphere.position.x += x * lastNoise;
 
-    var y = noise.simplex3(1, 1, framecount/100);
-    lastChord.sphere.position.y+=y*lastNoise;
+    // var y = noise.simplex3(1, 1, framecount / 100);
+    // lastChord.sphere.position.y += y * lastNoise;
 
-    var z = noise.simplex3(1, 1, framecount/100);
-    lastChord.sphere.position.z+=z*lastNoise;
+    // var z = noise.simplex3(1, 1, framecount / 100);
+    // lastChord.sphere.position.z += z * lastNoise;
 
-    
+
     animateCursor(100);
 
+    followPath()
 
     // sevenths[0].addForce(new THREE.Vector3(x, y, z))
 
 
 }
 
-
-function sigmoid(t) {
-    return 1/(1+Math.pow(Math.E, -t));
+function isCursorMoving() {
+    if (cursor.position.equals(currentChord.sphere.position)) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
-function triggerCursor(){
-    cursortick=0;
+function followPath() {
+    // if()
+    // if(path.length>0){
+
+    // }
+
+    if (isCursorMoving()) {
+
+    } else {
+        if (path.length > 0) {
+            lastChord=currentChord;
+            currentChord = path.pop()
+            vm.current=translateChordName(currentChord.root, currentChord.type);
+            triggerCursor()
+            // vm.path = path;
+        }
+
+    }
+
+}
+
+function sigmoid(t) {
+    return 1 / (1 + Math.pow(Math.E, -t));
+}
+
+function triggerCursor() {
+    cursortick = 0;
     // lastNoise=1;
     // currentNoise=0;
 }
 
-function animateCursor(duration){
-    if(moveCursor(cursortick, duration)){
+function animateCursor(duration) {
+    if (moveCursor(cursortick, duration)) {
+        //in motion
         // console.log('hey')
     } else {
         cursor.position.set(currentChord.sphere.position.x, currentChord.sphere.position.y, currentChord.sphere.position.z)
@@ -81,68 +112,71 @@ function animateCursor(duration){
     cursortick++;
 }
 
-function moveCursor(frame, duration){
-    
-    if(frame>=duration){
+function moveCursor(frame, duration) {
+
+    if (frame >= duration) {
         return false;
     } else {
         var line = new THREE.Line3(lastChord.sphere.position, currentChord.sphere.position);
-        var val = sigmoid(((frame/duration)*12)-6);
+        var val = sigmoid(((frame / duration) * 12) - 6);
         var point = line.at(val);
         cursor.position.set(point.x, point.y, point.z)
-        lastNoise=1-val;
-        currentNoise=val;
+        lastNoise = 1 - val;
+        currentNoise = val;
         return true;
     }
-    
-    
+
+
 }
 
-function raycast(){
-    raycaster.setFromCamera( mouse, camera );
+function raycast() {
+    raycaster.setFromCamera(mouse, camera);
 
     // calculate objects intersecting the picking ray
-    var intersects = raycaster.intersectObjects( scene.children );
+    var intersects = raycaster.intersectObjects(scene.children);
 
-    if(overChord){
+    if (overChord) {
         overChord.sphere.material.color.set('cyan')
         overChord = null;
     }
-    var hits = intersects.filter(function(e) { return e.object.userData instanceof Seventh; });
+    var hits = intersects.filter(function(e) {
+        return e.object.userData instanceof Seventh;
+    });
     if (hits.length > 0) {
         // console.log('hit')
-        overChord=hits[0].object.userData;
+        overChord = hits[0].object.userData;
         overChord.sphere.material.color.set('white')
         showLabel();
- 
+
     } else {
         hideLabel()
     }
 }
 
-function showLabel(){
-    document.getElementById('label').style.display='inline'
-    document.getElementById('label').style.left=mouseX+20 + 'px'
-    document.getElementById('label').style.top=mouseY-20+ 'px'
-    document.getElementById('label').innerHTML=translateChordName(overChord.root, overChord.type);
+function showLabel() {
+    document.getElementById('label').style.display = 'inline'
+    document.getElementById('label').style.left = mouseX + 20 + 'px'
+    document.getElementById('label').style.top = mouseY - 20 + 'px'
+    var ob = translateChordName(overChord.root, overChord.type);
+    document.getElementById('label').innerHTML = ob.root + ob.sign + ob.stem + '<sup>' + ob.super + '</sup>';
 }
 
-function hideLabel(){
-    document.getElementById('label').innerHTML='';
-    document.getElementById('label').style.display='none'
+function hideLabel() {
+    document.getElementById('label').innerHTML = '';
+    document.getElementById('label').style.display = 'none'
 }
 
-function staticCharge(){
-    for(var i=0;i<sevenths.length;i++){
-        for(var j = 0; j<sevenths.length; j++){
-            if(i!=j){
+function staticCharge() {
+    for (var i = 0; i < sevenths.length; i++) {
+        for (var j = 0; j < sevenths.length; j++) {
+            if (i != j) {
                 var d = sevenths[i].sphere.position.distanceTo(sevenths[j].sphere.position);
-                if(d<desiredSeperation){
+                if (d < desiredSeperation) {
                     var diff = sevenths[i].sphere.position.clone();
                     diff = diff.sub(sevenths[j].sphere.position);
                     // var diff = THREE.Vector3.sub(this.position,vehicles[i].position);
                     diff.normalize();
-                    diff.multiplyScalar(desiredSeperation-d)
+                    diff.multiplyScalar(desiredSeperation - d)
                     diff.multiplyScalar(chargeStrength * forceMult)
                     sevenths[i].addForce(diff)
                 }

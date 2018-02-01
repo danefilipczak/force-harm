@@ -10,31 +10,44 @@ var vm;
 
 loadVM = function() {
 	var data = {
-		love: "love you",
+		// love: "love you",
 		// w: currentChord.linkedTo[0]
 		w: '',
-		a:'',
-		s:'',
-		d:'',
-		z:null,
-		current:''
+		a: '',
+		s: '',
+		d: '',
+		z: null,
+		current: '',
+		// path: []
 	}
+
 	vm = new Vue({
 		el: '#app',
-		data: data
+		data: data,
+		// computed: {
+		// 	love: function() {
+		// 		return currentChord.root;
+		// 	}
+		// }
 	})
 }
 
 
 function triggerNavigate(key) {
 	console.log(key)
-	lastChord=currentChord;
-	var indices = {'w':0, 'a':1, 's':2, 'd':3, 'z':4};
+	lastChord = currentChord;
+	var indices = {
+		'w': 0,
+		'a': 1,
+		's': 2,
+		'd': 3,
+		'z': 4
+	};
 	var index = indices[key];
-	if(key=='z' && !vm.z){
+	if (key == 'z' && !vm.z) {
 		return
 	}
-	currentChord=lastChord.linkedTo[index];
+	currentChord = lastChord.linkedTo[index];
 	setVMFromCurrentChord();
 	triggerCursor();
 }
