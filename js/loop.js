@@ -85,6 +85,7 @@ function followPath() {
             currentChord = path.pop()
             vm.current=translateChordName(currentChord.root, currentChord.type);
             triggerCursor()
+            setVMpath();
             // vm.path = path;
         }
 

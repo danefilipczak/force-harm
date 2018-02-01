@@ -32,10 +32,29 @@
 
 <div id="app">
 	<div id="current">
-		{{current.root}}{{current.stem}}<sup>{{current.super}}</sup>
+		{{current.root}}{{current.signjs}}{{current.stem}}<sup>{{current.super}}</sup>
 		<!-- <p v-for="chord in path">
 		{{chord.root}}
 		</p> -->
+	<div id = "pathway">
+		<div class = "path" v-if="path[0]">
+			{{path[0].root}}{{path[0].signjs}}{{path[0].stem}}<sup>{{path[0].super}}</sup>
+		</div>
+		<div class = "path" v-if="path[1]">
+			{{path[1].root}}{{path[1].signjs}}{{path[1].stem}}<sup>{{path[1].super}}</sup>
+		</div>
+		<div class = "path" v-if="path[2]">
+			{{path[2].root}}{{path[2].signjs}}{{path[2].stem}}<sup>{{path[2].super}}</sup>
+		</div>
+		<div class = "path" v-if="path[3]">
+			{{path[3].root}}{{path[3].signjs}}{{path[3].stem}}<sup>{{path[3].super}}</sup>
+		</div>
+		<div class = "path" v-if="path[4]">
+			{{path[4].root}}{{path[4].signjs}}{{path[4].stem}}<sup>{{path[4].super}}</sup>
+		</div>
+
+	</div>
+
 	</div>
 	<div id="arrows">
 		<div id="w" class="arrow">

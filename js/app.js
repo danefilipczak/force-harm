@@ -18,7 +18,7 @@ loadVM = function() {
 		d: '',
 		z: null,
 		current: '',
-		// path: []
+		path: {}
 	}
 
 	vm = new Vue({
@@ -30,6 +30,19 @@ loadVM = function() {
 		// 	}
 		// }
 	})
+}
+
+
+function setVMpath(){
+	console.log(path)
+	for(var i = 0; i < 5; i++){
+		if(path[i]){
+			vm.path[i] = translateChordName(path[i].root, path[i].type)
+		} else {
+			vm.path[i] = null;
+		}
+		
+	}
 }
 
 
