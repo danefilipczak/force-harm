@@ -1,9 +1,6 @@
-// var vm = new Vue({
-//   el: '#app',
-//   data: {
-//   	love: "love you"
-//   }
-// })
+// vexflow
+// welcome screen
+// euclid
 
 
 var vm;
