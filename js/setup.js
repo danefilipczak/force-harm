@@ -137,6 +137,9 @@ window.onload = function() {
 	render();
 	loadVM();
 	setVMFromCurrentChord()
+
+	// initVexflow()
+	
 	// vm.linkedTo = currentChord.linkedTo.slice()
 	// Vue.set(vm, 'linkedTo', currentChord.linkedTo)
 }

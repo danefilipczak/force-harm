@@ -3,6 +3,14 @@ body{
 	margin:0px;
 }
 
+#notation{
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	z-index:5;
+	/*background-color:white;
+	opacity:0.5;*/
+}
 
 #label{
 	display:none;
