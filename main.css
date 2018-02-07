@@ -42,6 +42,7 @@ body{
 
 #arrows{
 	/*background-color:red;*/
+	pointer-events:none;
 	position:fixed;
 	top:0px;
 	right:0px;
