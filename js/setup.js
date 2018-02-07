@@ -4,48 +4,50 @@ var camera;
 var mouse = new THREE.Vector2();
 var raycaster = new THREE.Raycaster();
 var cursor;
+var boldLine;
+var cylinder;
 var mouseX;
 var mouseY;
 
 window.addEventListener('keypress', function(e) {
-  var key = String.fromCharCode(e.keyCode || e.which).toLowerCase();
-  if (key=='w'||key=='a'||key=='s'||key=='d'||key=='z'){
-  	triggerNavigate(key);
-  }
-  // console.log(key)
+	var key = String.fromCharCode(e.keyCode || e.which).toLowerCase();
+	if (key == 'w' || key == 'a' || key == 's' || key == 'd' || key == 'z') {
+		triggerNavigate(key);
+	}
+	// console.log(key)
 });
 
-function onMouseMove( event ) {
+function onMouseMove(event) {
 
 	// calculate mouse position in normalized device coordinates
 	// (-1 to +1) for both components
 	mouseX = event.clientX;
 	mouseY = event.clientY;
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
 
 }
 
 
 
-window.addEventListener( 'mousemove', onMouseMove, false );
+window.addEventListener('mousemove', onMouseMove, false);
 
 
-function onMousePress(event){
+function onMousePress(event) {
 
-	if(overChord){
+	if (overChord) {
 		var shortestPath = BFS(currentChord, overChord);
 		console.log(shortestPath)
 		path = shortestPath;
 
 	}
-	
+
 
 
 }
 
-window.addEventListener( 'click', onMousePress, false );
+window.addEventListener('click', onMousePress, false);
 
 window.onload = function() {
 
@@ -59,7 +61,7 @@ window.onload = function() {
 
 	// camera.far=10
 
-	
+
 
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -73,22 +75,22 @@ window.onload = function() {
 	ambient.position.z = 5
 	scene.add(ambient);
 
-	for(var i = 0; i<12; i++){
+	for (var i = 0; i < 12; i++) {
 		var m7 = new Seventh(i, 'm7')
 		var dom = new Seventh(i, 'dom')
 		var fr = new Seventh(i, 'fr')
 		var hd = new Seventh(i, 'hd')
 		sevenths.push(m7, dom, fr, hd)
 	}
-	for(var i = 0; i<sevenths.length; i++){
-		for(var j = 0; j<sevenths.length; j++){
-			if(sevenths[i].checkParsimony(sevenths[j])==3){
+	for (var i = 0; i < sevenths.length; i++) {
+		for (var j = 0; j < sevenths.length; j++) {
+			if (sevenths[i].checkParsimony(sevenths[j]) == 3) {
 				sevenths[i].linkedTo.push(sevenths[j]);
 			}
 		}
 	}
 
-	sevenths.forEach(function(s){
+	sevenths.forEach(function(s) {
 		s.initLines();
 	})
 
@@ -106,14 +108,32 @@ window.onload = function() {
 	// 	fragmentShader: shader.fragmentShader
 	// });
 	var material = new THREE.MeshPhongMaterial({
-        color: 'black'
-    });
-    // material.transparent=true;
-    // material.opacity=0.5
+		color: 'black'
+	});
+	// material.transparent=true;
+	// material.opacity=0.5
 
 	cursor = new THREE.Mesh(geometry, material);
 	scene.add(cursor);
-	
+
+	currentChord = sevenths[0];
+	lastChord = sevenths[1];
+
+	var geometry = new THREE.Geometry();
+	geometry.vertices.push(currentChord.sphere.position.clone());
+	geometry.vertices.push(lastChord.sphere.position.clone());
+	boldLine = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+		color: 'black'
+	}));
+	scene.add(boldLine)
+
+	var cylinderGeometry = new THREE.BoxGeometry( 0.5, 0.5, 6, 8, 1 );
+    cylinder = new THREE.Mesh( cylinderGeometry, 
+        new THREE.MeshPhongMaterial( { color: 'orange' } ) );
+    // cylinder.material.transparent=true;
+    // cylinder.material.opacity=0.9
+    scene.add(cylinder)
+
 	// var materialArray = [];
 	// for (var i = 0; i < 6; i++)
 	// 	materialArray.push(new THREE.MeshBasicMaterial({
@@ -131,30 +151,29 @@ window.onload = function() {
 
 
 	//
-	currentChord = sevenths[0];
-	lastChord = sevenths[1];
+	
 
 	render();
 	loadVM();
 	setVMFromCurrentChord()
 
 	// initVexflow()
-	
+
 	// vm.linkedTo = currentChord.linkedTo.slice()
 	// Vue.set(vm, 'linkedTo', currentChord.linkedTo)
 }
 
 
-function setVMFromCurrentChord(){
-	vm.current=translateChordName(currentChord.root, currentChord.type);
+function setVMFromCurrentChord() {
+	vm.current = translateChordName(currentChord.root, currentChord.type);
 	vm.w = translateChordName(currentChord.linkedTo[0].root, currentChord.linkedTo[0].type)
 	vm.a = translateChordName(currentChord.linkedTo[1].root, currentChord.linkedTo[1].type)
 	vm.s = translateChordName(currentChord.linkedTo[2].root, currentChord.linkedTo[2].type)
 	vm.d = translateChordName(currentChord.linkedTo[3].root, currentChord.linkedTo[3].type)
-	if(currentChord.linkedTo[4]){
+	if (currentChord.linkedTo[4]) {
 		vm.z = translateChordName(currentChord.linkedTo[4].root, currentChord.linkedTo[4].type)
 	} else {
-		vm.z=null;
+		vm.z = null;
 	}
-	
+
 }

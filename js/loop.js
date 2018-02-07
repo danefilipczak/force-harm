@@ -33,34 +33,41 @@ function animationLoop() {
 
     framecount++;
 
-    // var x = noise.simplex3(1, 1, framecount / 100);
-    // currentChord.sphere.position.x += x * currentNoise;
-
-    // var y = noise.simplex3(1, 1, framecount / 100);
-    // currentChord.sphere.position.y += y * currentNoise;
-
-    // var z = noise.simplex3(1, 1, framecount / 100);
-    // currentChord.sphere.position.z += z * currentNoise;
-
-
-
-    // var x = noise.simplex3(1, 1, framecount / 100);
-    // lastChord.sphere.position.x += x * lastNoise;
-
-    // var y = noise.simplex3(1, 1, framecount / 100);
-    // lastChord.sphere.position.y += y * lastNoise;
-
-    // var z = noise.simplex3(1, 1, framecount / 100);
-    // lastChord.sphere.position.z += z * lastNoise;
+    addNoise();
 
 
     animateCursor(100);
 
     followPath()
+    setBoldLine(lastChord.sphere.position, currentChord.sphere.position);
+    setCylinder(lastChord.sphere.position, currentChord.sphere.position);
 
     // sevenths[0].addForce(new THREE.Vector3(x, y, z))
 
 
+}
+
+function addNoise() {
+    var scale = 500;
+    var x = noise.simplex3(1, 1, framecount / scale);
+    currentChord.sphere.position.x += x * currentNoise;
+
+    var y = noise.simplex3(1, 1, framecount / scale);
+    currentChord.sphere.position.y += y * currentNoise;
+
+    var z = noise.simplex3(1, 1, framecount / scale);
+    currentChord.sphere.position.z += z * currentNoise;
+
+
+
+    var x = noise.simplex3(1, 1, framecount / scale);
+    lastChord.sphere.position.x += x * lastNoise;
+
+    var y = noise.simplex3(1, 1, framecount / scale);
+    lastChord.sphere.position.y += y * lastNoise;
+
+    var z = noise.simplex3(1, 1, framecount / scale);
+    lastChord.sphere.position.z += z * lastNoise;
 }
 
 function isCursorMoving() {
@@ -81,9 +88,9 @@ function followPath() {
 
     } else {
         if (path.length > 0) {
-            lastChord=currentChord;
+            lastChord = currentChord;
             currentChord = path.pop()
-            vm.current=translateChordName(currentChord.root, currentChord.type);
+            vm.current = translateChordName(currentChord.root, currentChord.type);
             triggerCursor()
             setVMpath();
             // vm.path = path;
@@ -107,6 +114,7 @@ function animateCursor(duration) {
     if (moveCursor(cursortick, duration)) {
         //in motion
         // console.log('hey')
+
     } else {
         cursor.position.set(currentChord.sphere.position.x, currentChord.sphere.position.y, currentChord.sphere.position.z)
     }
@@ -124,11 +132,60 @@ function moveCursor(frame, duration) {
         cursor.position.set(point.x, point.y, point.z)
         lastNoise = 1 - val;
         currentNoise = val;
+
         return true;
     }
+}
 
+
+function setCylinder(pointA, pointB) {
+
+
+    /* edge from X to Y */
+    var line = new THREE.Line3(pointA, pointB);
+    var direction = new THREE.Vector3().subVectors(pointA, pointB);
+
+    // var edgeGeometry = new THREE.BoxGeometry(0.5, 0.5, direction.length(), 8, 1);
+    // console.log(edgeGeometry.vertices[0].z)
+    // cylinder.geometry=edgeGeometry;
+
+    var length = Math.abs(direction.length() / 2);
+    // console.log(length)
+
+    // for(var i = 0; i<cylinder.geometry.vertices.length; i++){
+    //     var vertex = cylinder.geometry.vertices[i];
+    //     if(vertex.z>=0){
+    //         vertex.z = length;
+    //     } else {
+    //         vertex.z = length*-1;
+    //     }
+    // }
+    cylinder.geometry.vertices.forEach(function(v) {
+        if (v.z >= 0) {
+            v.z = length;
+        } else {
+            // v.z = length*-2;
+        }
+    });
+
+
+    cylinder.geometry.verticesNeedUpdate = true;
+
+
+    cylinder.lookAt(pointB)
+    cylinder.position.copy(line.at(0.5))
 
 }
+
+
+function setBoldLine(pointY, pointX) {
+    //draw a bold line between two vector threes
+    /* edge from X to Y */
+    boldLine.geometry.vertices[0].copy(pointX)
+    boldLine.geometry.vertices[1].copy(pointY)
+    boldLine.geometry.verticesNeedUpdate = true;
+}
+
 
 function raycast() {
     raycaster.setFromCamera(mouse, camera);
