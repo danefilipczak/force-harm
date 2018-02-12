@@ -152,6 +152,7 @@ function setCylinder(pointA, pointB) {
     var length = Math.abs(direction.length() / 2);
     // console.log(length)
 
+
     // for(var i = 0; i<cylinder.geometry.vertices.length; i++){
     //     var vertex = cylinder.geometry.vertices[i];
     //     if(vertex.z>=0){
