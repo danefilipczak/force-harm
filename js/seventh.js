@@ -52,13 +52,15 @@ function translateChordName(root, type) {
 		'fr': '7',
 		'dom': '7',
 		'hd': '-7',
-		'm7': '-7'
+		'm7': '-7',
+		'dim': 'dim7'
 	}
 	var supers = {
 		'fr': 'b5',
 		'dom': '',
 		'hd': 'b5',
-		'm7': ''
+		'm7': '',
+		'dim': ''
 	}
 	return {
 		'root': roots[root],
@@ -182,35 +184,44 @@ Seventh.prototype.forceLink = function() {
 }
 
 Seventh.prototype.initialize = function() {
-	this.chroma.push( //everyone gets a root and a minor seventh
-		this.root,
-		(this.root + 10) % 12
-	)
-	switch (this.type) {
-		case 'm7':
-			this.chroma.push(
-				(this.root + 3) % 12,
-				(this.root + 7) % 12
-			);
-			break;
-		case 'hd':
-			this.chroma.push(
-				(this.root + 3) % 12,
-				(this.root + 6) % 12
-			);
-			break;
-		case 'fr':
-			this.chroma.push(
-				(this.root + 4) % 12,
-				(this.root + 6) % 12
-			);
-			break;
-		case 'dom':
-			this.chroma.push(
-				(this.root + 4) % 12,
-				(this.root + 7) % 12
-			);
-			break;
+	if(this.type=='dim'){
+		this.chroma.push(
+			this.root,
+			(this.root + 3)%12,
+			(this.root + 6)%12,
+			(this.root + 9)%12
+			)
+	} else {
+		this.chroma.push( //everyone else gets a root and a minor seventh
+			this.root,
+			(this.root + 10) % 12
+		)
+		switch (this.type) {
+			case 'm7':
+				this.chroma.push(
+					(this.root + 3) % 12,
+					(this.root + 7) % 12
+				);
+				break;
+			case 'hd':
+				this.chroma.push(
+					(this.root + 3) % 12,
+					(this.root + 6) % 12
+				);
+				break;
+			case 'fr':
+				this.chroma.push(
+					(this.root + 4) % 12,
+					(this.root + 6) % 12
+				);
+				break;
+			case 'dom':
+				this.chroma.push(
+					(this.root + 4) % 12,
+					(this.root + 7) % 12
+				);
+				break;
+		}
 	}
 }
 

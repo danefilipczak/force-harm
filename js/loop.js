@@ -1,8 +1,31 @@
-var desiredSeperation = 10;
+
+//moderate
+// var desiredSeperation = 10;
+// var forceMult = 0.5;
+// var chargeStrength = 0.01;
+// var linkDistance = 15;
+// var linkStrength = 0.001;
+
+
+//rigid
+// var desiredSeperation = 10/2;
+// var forceMult = 0.5;
+// // var forceMult = 0.001;
+// var chargeStrength = 0.01;
+// var linkDistance = 50/2;
+// var linkStrength = 0.001;
+
+
+
+//loose
+var desiredSeperation = 50;
 var forceMult = 0.5;
+// var forceMult = 0.001;
 var chargeStrength = 0.01;
-var linkDistance = 15;
+var linkDistance = 1;
 var linkStrength = 0.001;
+
+
 var overChord = null;
 var framecount = 0;
 var currentChord;
@@ -33,7 +56,7 @@ function animationLoop() {
 
     framecount++;
 
-    addNoise();
+    //addNoise();
 
 
     animateCursor(100);
