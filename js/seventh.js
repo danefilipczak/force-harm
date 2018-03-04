@@ -183,6 +183,13 @@ Seventh.prototype.forceLink = function() {
 	})
 }
 
+Seventh.prototype.kill = function(){
+	scene.remove(this.sphere);
+	this.lines.forEach(function(l){
+		scene.remove(l)
+	})
+}
+
 Seventh.prototype.initialize = function() {
 	if(this.type=='dim'){
 		this.chroma.push(

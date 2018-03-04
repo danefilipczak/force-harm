@@ -75,36 +75,7 @@ window.onload = function() {
 	ambient.position.z = 5
 	scene.add(ambient);
 
-	for (var i = 0; i < 12; i++) {
-		var m7 = new Seventh(i, 'm7')
-		var dom = new Seventh(i, 'dom')
-		//var fr = new Seventh(i, 'fr')
-		var hd = new Seventh(i, 'hd')
-		sevenths.push(m7, dom, hd)
-	}
-
-	for(var i = 0; i<6; i++){
-		var fr = new Seventh(i, 'fr')
-		sevenths.push(fr)
-	}
-
-	for(var i = 0; i<3; i++){
-		var dim = new Seventh(i, 'dim')
-		sevenths.push(dim)
-	}
-
-
-	for (var i = 0; i < sevenths.length; i++) {
-		for (var j = 0; j < sevenths.length; j++) {
-			if (sevenths[i].checkParsimony(sevenths[j]) == 3) {
-				sevenths[i].linkedTo.push(sevenths[j]);
-			}
-		}
-	}
-
-	sevenths.forEach(function(s) {
-		s.initLines();
-	})
+	
 
 
 	var geometry = new THREE.SphereGeometry(1.1, 32, 32);
@@ -128,23 +99,14 @@ window.onload = function() {
 	cursor = new THREE.Mesh(geometry, material);
 	scene.add(cursor);
 
-	currentChord = sevenths[0];
-	lastChord = sevenths[1];
-
-	var geometry = new THREE.Geometry();
-	geometry.vertices.push(currentChord.sphere.position.clone());
-	geometry.vertices.push(lastChord.sphere.position.clone());
-	boldLine = new THREE.Line(geometry, new THREE.LineBasicMaterial({
-		color: 'black'
-	}));
-	scene.add(boldLine)
+	
 
 	var cylinderGeometry = new THREE.BoxGeometry( 0.5, 0.5, 6, 8, 1 );
     cylinder = new THREE.Mesh( cylinderGeometry, 
         new THREE.MeshPhongMaterial( { color: 'white' } ) );
     // cylinder.material.transparent=true;
     // cylinder.material.opacity=0.9
-    scene.add(cylinder)
+    // scene.add(cylinder)
 
 	// var materialArray = [];
 	// for (var i = 0; i < 6; i++)
@@ -165,10 +127,23 @@ window.onload = function() {
 	//
 	
 
-	render();
+	
 	loadVM();
-	setVMFromCurrentChord()
+	
+	vm.reset()
 
+	currentChord = sevenths[0];
+	lastChord = sevenths[1];
+
+	var geometry = new THREE.Geometry();
+	geometry.vertices.push(currentChord.sphere.position.clone());
+	geometry.vertices.push(lastChord.sphere.position.clone());
+	boldLine = new THREE.Line(geometry, new THREE.LineBasicMaterial({
+		color: 'black'
+	}));
+	scene.add(boldLine)
+	setVMFromCurrentChord()
+	render();
 	// initVexflow()
 
 	// vm.linkedTo = currentChord.linkedTo.slice()

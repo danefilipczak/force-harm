@@ -62,7 +62,7 @@ function animationLoop() {
 
     followPath()
     setBoldLine(lastChord.sphere.position, currentChord.sphere.position);
-    setCylinder(lastChord.sphere.position, currentChord.sphere.position);
+    // setCylinder(lastChord.sphere.position, currentChord.sphere.position);
 
     // sevenths[0].addForce(new THREE.Vector3(x, y, z))
     setCurrentChordLabelPosition()
@@ -161,10 +161,11 @@ function moveCursor(frame, duration) {
     }
 }
 
+var easing = 0.05;
 
-function setCylinder(pointA, pointB) {
-
-
+function setCylinder(pointA, pointB_) {
+    var pointB = pointB_.clone()
+    var easing = 0.05;
     /* edge from X to Y */
     var line = new THREE.Line3(pointA, pointB);
     var direction = new THREE.Vector3().subVectors(pointA, pointB);
@@ -193,11 +194,16 @@ function setCylinder(pointA, pointB) {
         }
     });
 
+    // float targetX = mouseX;
+    // float dx = targetX - x;
+    // x += dx * easing;
+
+    dpoint = pointB.sub(pointB_)
 
     cylinder.geometry.verticesNeedUpdate = true;
 
 
-    cylinder.lookAt(pointB)
+    cylinder.lookAt(dpoint)
     cylinder.position.copy(line.at(0.5))
 
 }

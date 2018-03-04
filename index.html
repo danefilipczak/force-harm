@@ -105,6 +105,31 @@
 			<label for="two"><span class="radioBackground">diffuse</span></label>
 			<br>
 		<!-- <span>Picked: {{ integrity }}</span> -->
+		<div id='example-3'>
+		<br>
+			<label for="dom"><span class="radioBackground">dom</label>
+		  <input type="checkbox" id="dom" value="dom" v-model="checkedChords" v-on:change="reset()">
+		  
+		  <br>
+		  <label for="dim"><span class="radioBackground">dim</label>
+		  <input type="checkbox" id="dim" value="dim" v-model="checkedChords" v-on:change="reset()">
+		  
+		  <br>
+		  <label for="fr"><span class="radioBackground">fr</label>
+		  <input type="checkbox" id="fr" value="fr" v-model="checkedChords" v-on:change="reset()"> 
+		  
+		  <br>
+		  <label for="hd"><span class="radioBackground">hd</label>
+		  <input type="checkbox" id="hd" value="hd" v-model="checkedChords" v-on:change="reset()">
+		  
+		  <br>
+		  <label for="m7"><span class="radioBackground">m7</label>
+		  <input type="checkbox" id="m7" value="m7" v-model="checkedChords" v-on:change="reset()">
+		  
+
+  		<br>
+  		<span>Checked chords {{ checkedChords }}</span>
+		</div>
 	</div>
 </div>
 </body>
