@@ -1,4 +1,3 @@
-
 // moderate
 // var desiredSeperation = 10;
 // var forceMult = 0.5;
@@ -66,6 +65,7 @@ function animationLoop() {
     setCylinder(lastChord.sphere.position, currentChord.sphere.position);
 
     // sevenths[0].addForce(new THREE.Vector3(x, y, z))
+    setCurrentChordLabelPosition()
 
 
 }
@@ -247,6 +247,25 @@ function showLabel() {
 function hideLabel() {
     document.getElementById('label').innerHTML = '';
     document.getElementById('label').style.display = 'none'
+}
+
+function setCurrentChordLabelPosition() {
+
+    var width = window.innerWidth,
+        height = window.innerHeight;
+    var widthHalf = width / 2,
+        heightHalf = height / 2;
+
+    var pos = currentChord.sphere.position.clone();
+    pos.project(camera);
+    pos.x = (pos.x * widthHalf) + widthHalf;
+    pos.y = -(pos.y * heightHalf) + heightHalf;
+
+
+    document.getElementById('currentChordLabel').style.left = pos.x + 40 + 'px'
+    document.getElementById('currentChordLabel').style.top = pos.y - 40 + 'px'
+    var ob = translateChordName(currentChord.root, currentChord.type);
+    document.getElementById('currentChordLabel').innerHTML = ob.root + ob.sign + ob.stem + '<sup>' + ob.super + '</sup>';
 }
 
 function staticCharge() {
