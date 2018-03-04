@@ -141,7 +141,7 @@ window.onload = function() {
 
 	var cylinderGeometry = new THREE.BoxGeometry( 0.5, 0.5, 6, 8, 1 );
     cylinder = new THREE.Mesh( cylinderGeometry, 
-        new THREE.MeshPhongMaterial( { color: 'yellow' } ) );
+        new THREE.MeshPhongMaterial( { color: 'white' } ) );
     // cylinder.material.transparent=true;
     // cylinder.material.opacity=0.9
     scene.add(cylinder)

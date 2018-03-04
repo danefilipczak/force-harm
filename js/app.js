@@ -13,6 +13,7 @@ loadVM = function() {
 		a: '',
 		s: '',
 		d: '',
+		integrity: 'diffuse',
 		z: null,
 		current: '',
 		path: {}
@@ -21,6 +22,36 @@ loadVM = function() {
 	vm = new Vue({
 		el: '#app',
 		data: data,
+		methods: {
+			setIntegrity: function() {
+				//console.log(this.integrity)
+				switch (this.integrity) {
+					case 'rigid':
+						desiredSeperation = 10 / 2;
+						forceMult = 0.5;
+						// var forceMult = 0.001;
+						chargeStrength = 0.01;
+						linkDistance = 50 / 2;
+						linkStrength = 0.001;
+						break;
+					case 'moderate':
+						desiredSeperation = 10;
+						forceMult = 0.5;
+						chargeStrength = 0.01;
+						linkDistance = 15;
+						linkStrength = 0.001;
+						break;
+					case 'diffuse':
+						desiredSeperation = 50;
+						forceMult = 0.5;
+						// var forceMult = 0.001;
+						chargeStrength = 0.01;
+						linkDistance = 1;
+						linkStrength = 0.001;
+						break;
+				}
+			}
+		}
 		// computed: {
 		// 	love: function() {
 		// 		return currentChord.root;
@@ -30,15 +61,15 @@ loadVM = function() {
 }
 
 
-function setVMpath(){
+function setVMpath() {
 	console.log(path)
-	for(var i = 0; i < 5; i++){
-		if(path[i]){
+	for (var i = 0; i < 5; i++) {
+		if (path[i]) {
 			vm.path[i] = translateChordName(path[i].root, path[i].type)
 		} else {
 			vm.path[i] = null;
 		}
-		
+
 	}
 }
 

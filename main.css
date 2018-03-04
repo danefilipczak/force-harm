@@ -50,6 +50,23 @@ body{
 	padding-top:31.8%;
 }
 
+.radioBackground{
+	background-color:white;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+#radio{
+	text-align:right;
+	/*background-color:red;*/
+	/*pointer-events:none;*/
+	position:fixed;
+	top:31.8%;
+	right:0px;
+	/*width:31.8%;*/
+	/*padding-top:31.8%;*/
+}
+
 .chord{
 	position:absolute;
 	top:50%;

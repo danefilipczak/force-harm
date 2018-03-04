@@ -92,6 +92,19 @@
 			</div>
 		</div>
 	</div>
+	<div id="radio">
+		
+			<input type="radio" id="rigid" value="rigid" v-model="integrity"  v-on:change="setIntegrity()">
+			<label for="one"><span class="radioBackground">rigid</span></label>
+			<br>
+			<input type="radio" id="moderate" value="moderate" v-model="integrity" v-on:change="setIntegrity()">
+			<label for="two"><span class="radioBackground">moderate</span></label>
+			<br>
+			<input type="radio" id="diffuse" value="diffuse" v-model="integrity" v-on:change="setIntegrity()">
+			<label for="two"><span class="radioBackground">diffuse</span></label>
+			<br>
+		<!-- <span>Picked: {{ integrity }}</span> -->
+	</div>
 </div>
 </body>
 </html>

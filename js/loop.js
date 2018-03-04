@@ -1,5 +1,5 @@
 
-//moderate
+// moderate
 // var desiredSeperation = 10;
 // var forceMult = 0.5;
 // var chargeStrength = 0.01;
@@ -7,7 +7,7 @@
 // var linkStrength = 0.001;
 
 
-//rigid
+// rigid
 // var desiredSeperation = 10/2;
 // var forceMult = 0.5;
 // // var forceMult = 0.001;
@@ -56,7 +56,7 @@ function animationLoop() {
 
     framecount++;
 
-    //addNoise();
+    addNoise();
 
 
     animateCursor(100);
@@ -71,26 +71,27 @@ function animationLoop() {
 }
 
 function addNoise() {
-    var scale = 500;
+    var scale = 50;
+    var amount = 0.02;
     var x = noise.simplex3(1, 1, framecount / scale);
-    currentChord.sphere.position.x += x * currentNoise;
+    currentChord.sphere.position.x += x * currentNoise * amount;
 
     var y = noise.simplex3(1, 1, framecount / scale);
-    currentChord.sphere.position.y += y * currentNoise;
+    currentChord.sphere.position.y += y * currentNoise * amount;
 
     var z = noise.simplex3(1, 1, framecount / scale);
-    currentChord.sphere.position.z += z * currentNoise;
+    currentChord.sphere.position.z += z * currentNoise * amount;
 
 
 
     var x = noise.simplex3(1, 1, framecount / scale);
-    lastChord.sphere.position.x += x * lastNoise;
+    lastChord.sphere.position.x += x * lastNoise * amount;
 
     var y = noise.simplex3(1, 1, framecount / scale);
-    lastChord.sphere.position.y += y * lastNoise;
+    lastChord.sphere.position.y += y * lastNoise * amount;
 
     var z = noise.simplex3(1, 1, framecount / scale);
-    lastChord.sphere.position.z += z * lastNoise;
+    lastChord.sphere.position.z += z * lastNoise * amount;
 }
 
 function isCursorMoving() {
