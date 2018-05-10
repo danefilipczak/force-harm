@@ -67,6 +67,8 @@ function animationLoop() {
     // sevenths[0].addForce(new THREE.Vector3(x, y, z))
     setCurrentChordLabelPosition()
 
+    // if(currentChord){setArp(currentChord.chroma)}
+
 
 }
 

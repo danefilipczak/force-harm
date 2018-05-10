@@ -93,6 +93,10 @@ loadVM = function() {
 				sevenths.forEach(function(s) {
 					s.initLines();
 				})
+
+
+				currentChord = sevenths[0];
+				lastChord = sevenths[1];
 			},
 			setIntegrity: function() {
 				//console.log(this.integrity)
@@ -133,7 +137,7 @@ loadVM = function() {
 
 
 function setVMpath() {
-	console.log(path)
+	//console.log(path)
 	for (var i = 0; i < 5; i++) {
 		if (path[i]) {
 			vm.path[i] = translateChordName(path[i].root, path[i].type)
