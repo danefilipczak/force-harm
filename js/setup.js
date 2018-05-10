@@ -12,10 +12,12 @@ var synth;
 var arp;
 var arp2;
 var ac;
+var duoSynth
+var mel = 0;
 
 window.addEventListener('keypress', function(e) {
 	Tone.Master._context._context.resume()
-	 // createTone()
+	// createTone()
 	var key = String.fromCharCode(e.keyCode || e.which).toLowerCase();
 	if (key == 'w' || key == 'a' || key == 's' || key == 'd' || key == 'z') {
 		triggerNavigate(key);
@@ -171,14 +173,64 @@ window.onload = function() {
 }
 
 
-function createTone(){
+var duoParams = {
+	vibratoAmount: 0.5,
+	vibratoRate: 5,
+	harmonicity: 2,
+	voice0: {
+		volume: -50,
+		portamento: '4n',
+		oscillator: {
+			type: 'sine'
+		},
+		filterEnvelope: {
+			attack: 0.5,
+			decay: 0,
+			sustain: 1,
+			release: 0.1
+		},
+		envelope: {
+			attack: 0.01,
+			decay: 0,
+			sustain: 1,
+			release: 0.5
+		}
+	},
+	voice1: {
+		volume: -20,
+		portamento: '4n',
+		oscillator: {
+			type: 'sine'
+		},
+		filterEnvelope: {
+			attack: 0.01,
+			decay: 0,
+			sustain: 1,
+			release: 0.5
+		},
+		envelope: {
+			attack: 0.5,
+			decay: 0,
+			sustain: 1,
+			release: 0.1
+		}
+	}
+}
+
+
+function createTone() {
 	ac = new AudioContext();
 	synth = new Tone.Synth(ac);
 	synth.toMaster();
 
 
-	synth2 = new Tone.FMSynth(ac);
+	synth2 = new Tone.Synth(ac);
 	synth2.toMaster();
+
+
+	duoSynth = new Tone.DuoSynth(duoParams).toMaster();
+
+
 	arp = new Tone.Pattern(function(time, note) {
 		synth.triggerAttackRelease(note, 0.25);
 	}, ["C4", "E4", "G4", "A4"], "upDown");
@@ -192,21 +244,51 @@ function createTone(){
 
 	Tone.Transport.start();
 	arp.interval = 0.2
-	arp2.interval = 0.2*(4/3)
+	arp2.interval = 0.2 * (4 / 3)
 }
 
-function setArp(chroma_){
+function setArp(chroma_) {
 	let chroma = chroma_;
-	chroma.sort(function(a, b){return a-b});
+	chroma.sort(function(a, b) {
+		return a - b
+	});
 	let names = [
 		'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4'
 	]
 	arp.values = [];
 	arp2.values = [];
-	chroma.forEach(function(c){
+	chroma.forEach(function(c) {
 		arp.values.push(names[c])
 		arp2.values.push(names[c])
 	})
+
+	let oldMel = mel;
+	mel = findClosest(chroma, oldMel);
+	if (oldMel != mel) {
+		duoSynth.triggerRelease()
+		duoSynth.triggerAttack(names[mel]);
+	}
+
+	console.log(names[mel])
+}
+
+function findClosest(array, int) {
+
+	//find value in array that is closest to but not identical to int
+	let closest = null;
+	let shortestDist = Infinity;
+	for (var i = 0; i < array.length; i++) {
+		if (Math.abs(int - array[i]) < shortestDist && array[i] != int) {
+			dist = Math.abs(int - array[i]);
+			closest = array[i];
+		}
+	}
+
+	if (shortestDist > 5 && array.includes(int) && Math.random() > 0.5) {
+		closest = int;
+	}
+	// console.log(closest)
+	return closest;
 }
 
 
