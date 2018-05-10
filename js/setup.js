@@ -10,6 +10,7 @@ var mouseX;
 var mouseY;
 var synth;
 var arp;
+var arp2;
 var ac;
 
 window.addEventListener('keypress', function(e) {
@@ -19,7 +20,7 @@ window.addEventListener('keypress', function(e) {
 	if (key == 'w' || key == 'a' || key == 's' || key == 'd' || key == 'z') {
 		triggerNavigate(key);
 	}
-	setArp(currentChord.chroma.sort(function(a, b){return a-b}))
+	setArp(currentChord.chroma)
 	// console.log(key)
 });
 
@@ -174,20 +175,37 @@ function createTone(){
 	ac = new AudioContext();
 	synth = new Tone.Synth(ac);
 	synth.toMaster();
+
+
+	synth2 = new Tone.FMSynth(ac);
+	synth2.toMaster();
 	arp = new Tone.Pattern(function(time, note) {
 		synth.triggerAttackRelease(note, 0.25);
 	}, ["C4", "E4", "G4", "A4"], "upDown");
 	arp.start(0);
+
+
+	arp2 = new Tone.Pattern(function(time, note) {
+		synth2.triggerAttackRelease(note, 0.25);
+	}, ["C4", "E4", "G4", "A4"], "upDown");
+	arp2.start(0);
+
 	Tone.Transport.start();
+	arp.interval = 0.2
+	arp2.interval = 0.2*(4/3)
 }
 
-function setArp(chroma){
+function setArp(chroma_){
+	let chroma = chroma_;
+	chroma.sort(function(a, b){return a-b});
 	let names = [
 		'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4'
 	]
 	arp.values = [];
+	arp2.values = [];
 	chroma.forEach(function(c){
 		arp.values.push(names[c])
+		arp2.values.push(names[c])
 	})
 }
 
