@@ -37,12 +37,20 @@
 
 
 <div id="app">
+	<div class="info" v-if="intro">
+		<div class="hello">
+			This graph represents voice leadings between five different types of seventh chords. 
+			Chords are connected if they share three out of four of their notes in common. Transitions between connected chords amount to moving only one of their voices, so we might term their voice leading to be particularly efficient. 
+			Use the keyboard to navigate to adjacent chords; clicking on any chord will take you there from the current chord by the shortest available path. Pan and zoom with the mouse. Press a key to begin, mind the volume. 
+		</div>
+	</div>
 	<div id="current">
 		{{current.root}}{{current.signjs}}{{current.stem}}<sup>{{current.super}}</sup>
 		<!-- <p v-for="chord in path">
 		{{chord.root}}
 		</p> -->
 	<div id = "pathway">
+
 		<div class = "path" v-if="path[0]">
 			{{path[0].root}}{{path[0].signjs}}{{path[0].stem}}<sup>{{path[0].super}}</sup>
 		</div>
@@ -105,8 +113,8 @@
 			<input type="radio" id="diffuse" value="diffuse" v-model="integrity" v-on:change="setIntegrity()">
 			<label for="two"><span class="radioBackground">diffuse</span></label>
 			<br>
-		<!-- <span>Picked: {{ integrity }}</span> -->
-		<div id='example-3'>
+		</div>
+		<!-- <div id='example-3'>
 		<br>
 			<label for="dom"><span class="radioBackground">dom</label>
 		  <input type="checkbox" id="dom" value="dom" v-model="checkedChords" v-on:change="reset()">
@@ -130,7 +138,7 @@
 
   		<br>
   		<span>Checked chords {{ checkedChords }}</span>
-		</div>
+		</div> -->
 	</div>
 </div>
 </body>

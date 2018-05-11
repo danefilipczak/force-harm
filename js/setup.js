@@ -23,6 +23,7 @@ window.addEventListener('keypress', function(e) {
 		triggerNavigate(key);
 	}
 	setArp(currentChord.chroma)
+	vm.intro=false;
 	// console.log(key)
 });
 
@@ -65,6 +66,7 @@ function onMousePress(event) {
 window.addEventListener('click', onMousePress, false);
 
 window.onload = function() {
+	Tone.Master._context._context.suspend()
 
 	noise.seed(Math.random());
 	scene = new THREE.Scene();
@@ -244,7 +246,7 @@ function createTone() {
 
 	Tone.Transport.start();
 	arp.interval = 0.2
-	arp2.interval = 0.2 * (4 / 3)
+	arp2.interval = 0.2 * 2
 }
 
 function setArp(chroma_) {

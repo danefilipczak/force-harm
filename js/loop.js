@@ -58,7 +58,7 @@ function animationLoop() {
     addNoise();
 
 
-    animateCursor(100);
+    animateCursor(200);
 
     followPath()
     setBoldLine(lastChord.sphere.position, currentChord.sphere.position);
@@ -118,6 +118,8 @@ function followPath() {
             currentChord = path.pop()
             vm.current = translateChordName(currentChord.root, currentChord.type);
             triggerCursor()
+            setArp(currentChord.chroma)
+            setVMFromCurrentChord();
             setVMpath();
             // vm.path = path;
         }

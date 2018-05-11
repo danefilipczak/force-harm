@@ -7,6 +7,7 @@ var vm;
 
 loadVM = function() {
 	var data = {
+		intro:true,
 		// love: "love you",
 		// w: currentChord.linkedTo[0]
 		w: '',
